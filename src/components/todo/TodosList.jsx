@@ -11,6 +11,7 @@ const TodosList = (props) => (
         deleteTodoProps={props.deleteTodoProps}
         setTitle={props.setTitle}
         setPrio={props.setPrio}
+        setCategory={props.setCategory}
       />
     ))}
   </ul>

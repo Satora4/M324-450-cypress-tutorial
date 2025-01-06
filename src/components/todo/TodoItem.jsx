@@ -4,13 +4,8 @@ import { FaTrash } from "react-icons/fa";
 import styles from "./TodoItem.module.css";
 
 const TodoItem = (props) => {
-  const priority = {
-    LOW: "Tief",
-    MEDIUM: "Mittel",
-    HIGH: "Hoch",
-  };
   const [editing, setEditing] = useState(false);
-  const { completed, id, title, prio } = props.todo;
+  const { completed, id, title, prio, cat } = props.todo;
   const editMode = {};
   const viewMode = {};
 
@@ -46,42 +41,53 @@ const TodoItem = (props) => {
 
   return (
       <li className={styles.item} data-type="todo-item">
-        <div onDoubleClick={handleEditing} style={viewMode}>
+          <div onDoubleClick={handleEditing} style={viewMode}>
+              <input
+                  type="checkbox"
+                  className={styles.checkbox}
+                  checked={completed}
+                  onChange={() => props.handleChangeProps(id)}
+                  name="checkbox"
+              />
+              <button
+                  data-set="delete-todo-btn"
+                  onClick={() => props.deleteTodoProps(id)}
+              >
+                  <FaTrash style={{color: "orangered", fontSize: "16px"}}/>
+              </button>
+              <span style={completed ? completedStyle : null}>{title}</span>
+              <span style={completed ? completedStyle : null}>{prio}</span>
+              <span style={completed ? completedStyle : null}>{cat}</span>
+          </div>
           <input
-              type="checkbox"
-              className={styles.checkbox}
-              checked={completed}
-              onChange={() => props.handleChangeProps(id)}
-              name="checkbox"
+              type="text"
+              style={editMode}
+              className={styles.textInput}
+              value={title}
+              onChange={(e) => {
+                  props.setTitle(e.target.value, id);
+              }}
+              onKeyDown={handleUpdatedDone}
           />
-          <button
-              data-set="delete-todo-btn"
-              onClick={() => props.deleteTodoProps(id)}
+          <select
+              style={editMode}
+              value={prio}
+              onChange={(e) => props.setPrio(e.target.value, id)}
           >
-            <FaTrash style={{color: "orangered", fontSize: "16px"}}/>
-          </button>
-          <span style={completed ? completedStyle : null}>{title}</span>
-          <span style={completed ? completedStyle : null}>{prio}</span>
-        </div>
-        <input
-            type="text"
-            style={editMode}
-            className={styles.textInput}
-            value={title}
-            onChange={(e) => {
-              props.setTitle(e.target.value, id);
-            }}
-            onKeyDown={handleUpdatedDone}
-        />
-        <select
-            style={editMode}
-            value={prio}
-            onChange={(e) => props.setPrio(e.target.value, id)}
-        >
-          <option value="HIGH">Hoch</option>
-          <option value="MEDIUM">Mittel</option>
-          <option value="LOW">Tief</option>
-        </select>
+              <option value="HIGH">Hoch</option>
+              <option value="MEDIUM">Mittel</option>
+              <option value="LOW">Tief</option>
+          </select>
+          <select
+              style={editMode}
+              value={cat}
+              onChange={(e) => props.setCategory(e.target.value, id)}
+          >
+              <option value="-">Keine Kategorie</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+          </select>
 
       </li>
   );

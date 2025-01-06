@@ -16,6 +16,7 @@ const TodoContainer = () => {
     const [todos, setTodos] = useState(getInitialTodos());
     const [showPopup, setShowPopup] = useState(false);
     const [newTaskTitle, setNewTaskTitle] = useState("");
+    const [filter, setFilter] = useState("NO_FILTER");
 
     const handleChange = (id) => {
         setTodos((prevState) =>
@@ -68,6 +69,30 @@ const TodoContainer = () => {
         );
     };
 
+    const setCategory = (updatedCat, id) => {
+        setTodos(
+            todos.map((todo) => {
+                if (todo.id === id) {
+                    todo.cat = updatedCat;
+                }
+                return todo;
+            }).sort(sortByPriority)
+        );
+    };
+
+    const handleFilterChange = (e) => {
+        const updatedFilter = e.target.value;
+        setFilter(updatedFilter); // Zustand korrekt aktualisieren
+    };
+
+    const filterByCategory = (prio) => {
+        if (prio === "NO_FILTER") {
+            return todos;
+        } else {
+            return todos.filter(todo => todo.cat === prio);
+        }
+    }
+
     const sortByPriority = (a, b) => {
         const priorityOrder = { HIGH: 1, MEDIUM: 2, LOW: 3 };
         return priorityOrder[a.prio] - priorityOrder[b.prio];
@@ -91,12 +116,20 @@ const TodoContainer = () => {
                     closePopup={() => setShowPopup(false)}
                 />
             )}
+            <select value={filter} onChange={handleFilterChange}>
+                <option value="NO_FILTER">Alle Kategorien</option>
+                <option value="-">Keine Kategorie</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+            </select>
             <TodosList
-                todos={todos}
+                todos={filterByCategory(filter)}
                 handleChangeProps={handleChange}
                 deleteTodoProps={delTodo}
                 setTitle={setTitle}
                 setPrio={setPrio}
+                setCategory={setCategory}
             />
         </div>
     );
