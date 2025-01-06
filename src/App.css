@@ -16,18 +16,20 @@ body {
   width: 100%;
   margin-bottom: 20px;
   display: flex;
+  align-items: center; /* Center items vertically */
   border-radius: calc(0.5 * 100px);
   box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.38);
-  justify-content: space-evenly;
+  justify-content: space-between; /* Use 'space-between' instead of 'space-evenly' */
 }
 
 .input-text {
   font-size: 1rem;
   font-weight: 400;
-  width: 85%;
-  padding-right: 5px;
-  padding-left: 10px;
+  flex-grow: 1; /* Let input grow to fill available space */
+  padding-right: 10px;
+  padding-left: 15px;
   border-radius: calc(0.5 * 100px);
+  border: none; /* Optional: Remove border for a cleaner look */
 }
 
 .input-text::placeholder {
