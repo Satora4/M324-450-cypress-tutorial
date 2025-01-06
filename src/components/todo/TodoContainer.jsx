@@ -33,16 +33,17 @@ const TodoContainer = () => {
     setTodos([...todos.filter((todo) => todo.id !== id)]);
   };
 
-  const addTodoItem = (title) => {
-    const newTodo = {
-      id: uuidv4(),
-      title,
-      completed: false,
+    const addTodoItem = (title) => {
+        const newTodo = {
+            id: uuidv4(),
+            title,
+            completed: false,
+            prio: "MEDIUM",
+        };
+        setTodos([...todos, newTodo]);
     };
-    setTodos([...todos, newTodo]);
-  };
 
-  const setTitle = (updatedTitle, id) => {
+    const setTitle = (updatedTitle, id) => {
     setTodos(
       todos.map((todo) => {
         if (todo.id === id) {

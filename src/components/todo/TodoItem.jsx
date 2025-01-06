@@ -58,7 +58,7 @@ const TodoItem = (props) => {
               data-set="delete-todo-btn"
               onClick={() => props.deleteTodoProps(id)}
           >
-            <FaTrash style={{ color: "orangered", fontSize: "16px" }} />
+            <FaTrash style={{color: "orangered", fontSize: "16px"}}/>
           </button>
           <span style={completed ? completedStyle : null}>{title}</span>
           <span style={completed ? completedStyle : null}>{prio}</span>
@@ -73,20 +73,14 @@ const TodoItem = (props) => {
             }}
             onKeyDown={handleUpdatedDone}
         />
-        <select style={editMode}>
-          <option value={priority.HIGH}
-                  onChange={props.setPrio(priority.LOW, id)}
-                  onClick={handleUpdatedDone}
-          >Hoch</option>
-          <option value={priority.MEDIUM}
-                  onChange={props.setPrio(priority.MEDIUM, id)}
-                  onClick={handleUpdatedDone}
-          >Mittel</option>
-          <option
-              value={priority.LOW}
-              onChange={props.setPrio(priority.LOW, id)}
-              onClick={handleUpdatedDone}
-          >Tief</option>
+        <select
+            style={editMode}
+            value={prio}
+            onChange={(e) => props.setPrio(e.target.value, id)}
+        >
+          <option value="HIGH">Hoch</option>
+          <option value="MEDIUM">Mittel</option>
+          <option value="LOW">Tief</option>
         </select>
 
       </li>
