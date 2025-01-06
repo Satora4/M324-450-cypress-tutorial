@@ -42,7 +42,7 @@ const TodoContainer = () => {
     setTodos([...todos, newTodo]);
   };
 
-  const setUpdate = (updatedTitle, id) => {
+  const setTitle = (updatedTitle, id) => {
     setTodos(
       todos.map((todo) => {
         if (todo.id === id) {
@@ -52,6 +52,17 @@ const TodoContainer = () => {
       })
     );
   };
+
+    const setPrio = (updatedPrio, id) => {
+        setTodos(
+            todos.map((todo) => {
+                if (todo.id === id) {
+                    todo.prio = updatedPrio;
+                }
+                return todo;
+            })
+        );
+    };
 
   // componentDidUpdate
   useEffect(() => {
@@ -68,7 +79,8 @@ const TodoContainer = () => {
         todos={todos}
         handleChangeProps={handleChange}
         deleteTodoProps={delTodo}
-        setUpdate={setUpdate}
+        setTitle={setTitle}
+        setPrio={setPrio}
       />
     </div>
   );
