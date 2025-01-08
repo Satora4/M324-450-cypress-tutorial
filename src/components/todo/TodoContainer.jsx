@@ -36,13 +36,14 @@ const TodoContainer = () => {
         setTodos([...todos.filter((todo) => todo.id !== id)]);
     };
 
-    const addTodoItem = (prio) => {
+    const addTodoItem = (prio, dueDate) => {
         const newTodo = {
             id: uuidv4(),
             title: newTaskTitle,
             completed: false,
             prio,
-            cat: "-"
+            cat: "-",
+            dueDate
         };
         setTodos((prevTodos) => [...prevTodos, newTodo].sort(sortByPriority));
         setNewTaskTitle("");
@@ -104,6 +105,17 @@ const TodoContainer = () => {
         localStorage.setItem("todos", temp);
     }, [todos]);
 
+    const setDueDate = (updatedDate, id) => {
+        setTodos(
+            todos.map((todo) => {
+                if (todo.id === id) {
+                    todo.dueDate = updatedDate;
+                }
+                return todo;
+            })
+        );
+    };
+
     return (
         <div className={styles.inner}>
             <Header />
@@ -117,7 +129,7 @@ const TodoContainer = () => {
                     closePopup={() => setShowPopup(false)}
                 />
             )}
-            <select value={filter} onChange={handleFilterChange}>
+            <select value={filter} onChange={handleFilterChange} style={{float: "right"}}>
                 <option value="NO_FILTER">Alle Kategorien</option>
                 <option value="-">Keine Kategorie</option>
                 <option value="A">A</option>
@@ -131,6 +143,7 @@ const TodoContainer = () => {
                 setTitle={setTitle}
                 setPrio={setPrio}
                 setCategory={setCategory}
+                setDueDate={setDueDate} // Übergibt die neue Funktion
             />
         </div>
     );
