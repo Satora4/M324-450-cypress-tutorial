@@ -17,6 +17,8 @@ const TodoContainer = () => {
     const [showPopup, setShowPopup] = useState(false);
     const [newTaskTitle, setNewTaskTitle] = useState("");
     const [filter, setFilter] = useState("NO_FILTER");
+    const [sortPrio, setSortPrio] = useState(false);
+    const [sortDate, setSortDate] = useState(false);
 
     const handleChange = (id) => {
         setTodos((prevState) =>
@@ -36,16 +38,22 @@ const TodoContainer = () => {
         setTodos([...todos.filter((todo) => todo.id !== id)]);
     };
 
-    const addTodoItem = (prio, dueDate) => {
+    const addTodoItem = (prio,cat, dueDate) => {
         const newTodo = {
             id: uuidv4(),
             title: newTaskTitle,
             completed: false,
             prio,
-            cat: "-",
+            cat,
             dueDate
         };
-        setTodos((prevTodos) => [...prevTodos, newTodo].sort(sortByPriority));
+        if (sortPrio) {
+            setTodos((prevTodos) => [...prevTodos, newTodo].sort(sortByPriority));
+        } else if (sortDate) {
+            setTodos((prevTodos) => [...prevTodos, newTodo].sort(sortByDate));
+        } else {
+            setTodos((prevTodos) => [...prevTodos, newTodo]);
+        }
         setNewTaskTitle("");
     };
 
@@ -67,7 +75,7 @@ const TodoContainer = () => {
                     todo.prio = updatedPrio;
                 }
                 return todo;
-            }).sort(sortByPriority)
+            })
         );
     };
 
@@ -78,7 +86,7 @@ const TodoContainer = () => {
                     todo.cat = updatedCat;
                 }
                 return todo;
-            }).sort(sortByPriority)
+            })
         );
     };
 
@@ -100,6 +108,10 @@ const TodoContainer = () => {
         return priorityOrder[a.prio] - priorityOrder[b.prio];
     };
 
+    const sortByDate = (a, b) => {
+        return new Date(a.dueDate) - new Date(b.dueDate);
+    };
+
     useEffect(() => {
         const temp = JSON.stringify(todos);
         localStorage.setItem("todos", temp);
@@ -116,6 +128,16 @@ const TodoContainer = () => {
         );
     };
 
+    const getFilteredAndSortedTodos = () => {
+        if (sortPrio) {
+            return filterByCategory(filter).sort(sortByPriority);
+        } else if (sortDate) {
+            return filterByCategory(filter).sort(sortByDate);
+        } else {
+            return filterByCategory(filter);
+        }
+    }
+
     return (
         <div className={styles.inner}>
             <Header />
@@ -129,21 +151,49 @@ const TodoContainer = () => {
                     closePopup={() => setShowPopup(false)}
                 />
             )}
-            <select value={filter} onChange={handleFilterChange} style={{float: "right"}}>
-                <option value="NO_FILTER">Alle Kategorien</option>
-                <option value="-">Keine Kategorie</option>
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-            </select>
+            <div>
+                Sortieren nach:
+                <button
+                    onClick={() => {
+                        setSortPrio((prevSortPrio) => {
+                            setSortDate(false);
+                            console.log("Priority: " + !prevSortPrio);
+                            return !prevSortPrio;
+                        });
+                    }}
+                    className={sortPrio ? styles.buttonActive : styles.buttonInactive}
+                >
+                    Priorität
+                </button>
+                <button
+                    onClick={() => {
+                        setSortDate((prevSortDate) => {
+                            setSortPrio(false);
+                            console.log("Date: " + !prevSortDate);
+                            return !prevSortDate;
+                        });
+                    }}
+                    className={sortDate ? styles.buttonActive : styles.buttonInactive}
+                >
+                    Datum
+                </button>
+
+                <select value={filter} onChange={handleFilterChange} style={{float: "right"}}>
+                    <option value="NO_FILTER">Alle Kategorien</option>
+                    <option value="-">Keine Kategorie</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                </select>
+            </div>
             <TodosList
-                todos={filterByCategory(filter)}
+                todos={getFilteredAndSortedTodos()}
                 handleChangeProps={handleChange}
                 deleteTodoProps={delTodo}
                 setTitle={setTitle}
                 setPrio={setPrio}
                 setCategory={setCategory}
-                setDueDate={setDueDate} // Übergibt die neue Funktion
+                setDueDate={setDueDate}
             />
         </div>
     );

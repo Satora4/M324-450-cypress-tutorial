@@ -30,6 +30,8 @@ const TodoItem = (props) => {
         textDecoration: "line-through",
     };
 
+    const isLessThan24Hours = dueDate ? (new Date(dueDate) - new Date()) < 24 * 60 * 60 * 1000 : false;
+
     if (editing) {
         viewMode.display = "none";
     } else {
@@ -63,7 +65,10 @@ const TodoItem = (props) => {
                 <span style={completed ? completedStyle : null}>{prio}</span>
                 <span style={completed ? completedStyle : null}>{cat}</span>
                 <span style={completed ? completedStyle : null}>
-                    Fällig am: {dueDate ? new Date(dueDate).toLocaleDateString() : "Kein Datum"}
+                    Fällig am:&nbsp;
+                    <span className={isLessThan24Hours ? styles.nearDeadLine : null}>
+                        {dueDate ? new Date(dueDate).toLocaleDateString() : "Kein Datum"}
+                    </span>
                 </span>
             </div>
             <div style={editMode} onKeyDown={handleUpdatedDone}>

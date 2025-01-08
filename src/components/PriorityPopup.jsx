@@ -4,14 +4,14 @@ import {useState} from "react";
 
 const PriorityPopup = ({ addTodoItem, closePopup }) => {
     const [prio, setPrio] = useState("MEDIUM");
+    const [cat, setCat] = useState("-");
     const [dueDate, setDueDate] = useState("");
 
     const handleAddTodo = () => {
         if (dueDate.trim() === "") {
-            alert("Bitte ein Fälligkeitsdatum auswählen.");
-            return;
+            setDueDate("Kein Fälligkeitsdatum");
         }
-        addTodoItem(prio, dueDate);
+        addTodoItem(prio,cat, dueDate);
         closePopup();
     };
 
@@ -27,6 +27,18 @@ const PriorityPopup = ({ addTodoItem, closePopup }) => {
                     <option value="HIGH">Hoch</option>
                     <option value="MEDIUM">Mittel</option>
                     <option value="LOW">Tief</option>
+                </select>
+            </div>
+            <div>
+                <label>Kategorie:</label>
+                <select
+                    value={cat}
+                    onChange={(e) => setCat(e.target.value)}
+                >
+                    <option value="-">Keine Kategorie</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
                 </select>
             </div>
             <div>

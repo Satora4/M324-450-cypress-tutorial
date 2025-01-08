@@ -2,3 +2,15 @@
   width: 100%;
   padding: 8rem 10px 4rem;
 }
+
+.buttonActive {
+  background-color: #00d500;
+  color: white;
+  border: 1px solid #00bb00;
+}
+
+.buttonInactive {
+  background-color: #cecece;
+  color: black;
+  border: 1px solid #b2b2b2;
+}
