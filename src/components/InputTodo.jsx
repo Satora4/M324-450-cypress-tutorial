@@ -13,7 +13,7 @@ const InputTodo = ({ setNewTaskTitle, openPopup }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (inputText.trim()) {
-      openPopup(); // Öffne das Popup zur Prioritätsauswahl
+      openPopup(); // Öffnet das Popup zur Prioritätsauswahl
       setInputText(""); // Leere das Eingabefeld
     } else {
       alert("Bitte einen Aufgabentitel eingeben");

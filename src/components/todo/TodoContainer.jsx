@@ -42,6 +42,7 @@ const TodoContainer = () => {
             title: newTaskTitle,
             completed: false,
             prio,
+            cat: "-"
         };
         setTodos((prevTodos) => [...prevTodos, newTodo].sort(sortByPriority));
         setNewTaskTitle("");
