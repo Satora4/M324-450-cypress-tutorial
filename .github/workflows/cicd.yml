@@ -59,7 +59,7 @@ jobs:
   build-deployment:
     name: Build Deployment Artifact
     runs-on: ubuntu-latest
-    needs: [lint, node-tests]
+    needs: [ lint, node-tests ]
 
     steps:
       - name: Check out the repository
@@ -67,6 +67,12 @@ jobs:
 
       - name: Build project
         run: npm run build
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: deployment-artifact
+          path: ./dist/
 
       - name: Placeholder for Deployment
         run: echo "This is a placeholder for the Build Deployment Artifact job."
