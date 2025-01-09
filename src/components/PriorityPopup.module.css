@@ -17,6 +17,11 @@ button {
 }
 
 .closeButton {
-    background: #77ff00;
+    background: rgb(255, 0, 0);
+    color: white;
+}
+
+.addButton {
+    background: rgb(0, 231, 10);
     color: white;
 }

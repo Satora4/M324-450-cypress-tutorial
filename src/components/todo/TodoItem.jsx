@@ -1,96 +1,117 @@
 /* eslint react/prop-types: 0 */
-import { useState, useEffect } from "react";
-import { FaTrash } from "react-icons/fa";
+import {useEffect, useState} from "react";
+import {FaCheck, FaTrash} from "react-icons/fa";
 import styles from "./TodoItem.module.css";
 
 const TodoItem = (props) => {
-  const [editing, setEditing] = useState(false);
-  const { completed, id, title, prio, cat } = props.todo;
-  const editMode = {};
-  const viewMode = {};
+    const [editing, setEditing] = useState(false);
+    const {completed, id, title, prio, cat, dueDate} = props.todo;
+    const editMode = {};
+    const viewMode = {};
 
-  const handleEditing = () => {
-    setEditing(true);
-  };
+    const handleEditing = () => {
+        setEditing(true);
+    };
 
-  const handleUpdatedDone = (event) => {
-    if (event.key === "Enter") {
-      setEditing(false);
+    const handleUpdatedDone = (event) => {
+        if (event.key === "Enter") {
+            setEditing(false);
+        }
+    };
+
+    const handleUpdatedConfirm = () => {
+        setEditing(false);
+    };
+
+    const completedStyle = {
+        fontStyle: "italic",
+        color: "#595959",
+        opacity: 0.4,
+        textDecoration: "line-through",
+    };
+
+    const isLessThan24Hours = dueDate ? (new Date(dueDate) - new Date()) < 24 * 60 * 60 * 1000 : false;
+
+    if (editing) {
+        viewMode.display = "none";
+    } else {
+        editMode.display = "none";
     }
-  };
 
-  const completedStyle = {
-    fontStyle: "italic",
-    color: "#595959",
-    opacity: 0.4,
-    textDecoration: "line-through",
-  };
+    useEffect(
+        () => () => {
+            console.log("Cleaning up...");
+        },
+        []
+    );
 
-  if (editing) {
-    viewMode.display = "none";
-  } else {
-    editMode.display = "none";
-  }
+    return (
+        <li className={styles.item} data-type="todo-item">
+            <div onDoubleClick={handleEditing} style={viewMode}>
+                <input
+                    type="checkbox"
+                    className={styles.checkbox}
+                    checked={completed}
+                    onChange={() => props.handleChangeProps(id)}
+                    name="checkbox"
+                />
+                <button
+                    data-set="delete-todo-btn"
+                    onClick={() => props.deleteTodoProps(id)}
+                >
+                    <FaTrash style={{color: "orangered", fontSize: "16px"}}/>
+                </button>
+                <span style={completed ? completedStyle : null}>{title}</span>
+                <span style={completed ? completedStyle : null}>{prio}</span>
+                <span style={completed ? completedStyle : null}>{cat}</span>
+                <span style={completed ? completedStyle : null}>
+                    Fällig am:&nbsp;
+                    <span className={isLessThan24Hours ? styles.nearDeadLine : null}>
+                        {dueDate ? new Date(dueDate).toLocaleDateString() : "Kein Datum"}
+                    </span>
+                </span>
+            </div>
+            <div style={editMode} onKeyDown={handleUpdatedDone}>
+                <input
+                    type="text"
+                    className={styles.textInput}
+                    value={title}
+                    onChange={(e) => {
+                        props.setTitle(e.target.value, id);
+                    }}
 
-  useEffect(
-    () => () => {
-      console.log("Cleaning up...");
-    },
-    []
-  );
-
-  return (
-      <li className={styles.item} data-type="todo-item">
-          <div onDoubleClick={handleEditing} style={viewMode}>
-              <input
-                  type="checkbox"
-                  className={styles.checkbox}
-                  checked={completed}
-                  onChange={() => props.handleChangeProps(id)}
-                  name="checkbox"
-              />
-              <button
-                  data-set="delete-todo-btn"
-                  onClick={() => props.deleteTodoProps(id)}
-              >
-                  <FaTrash style={{color: "orangered", fontSize: "16px"}}/>
-              </button>
-              <span style={completed ? completedStyle : null}>{title}</span>
-              <span style={completed ? completedStyle : null}>{prio}</span>
-              <span style={completed ? completedStyle : null}>{cat}</span>
-          </div>
-          <input
-              type="text"
-              style={editMode}
-              className={styles.textInput}
-              value={title}
-              onChange={(e) => {
-                  props.setTitle(e.target.value, id);
-              }}
-              onKeyDown={handleUpdatedDone}
-          />
-          <select
-              style={editMode}
-              value={prio}
-              onChange={(e) => props.setPrio(e.target.value, id)}
-          >
-              <option value="HIGH">Hoch</option>
-              <option value="MEDIUM">Mittel</option>
-              <option value="LOW">Tief</option>
-          </select>
-          <select
-              style={editMode}
-              value={cat}
-              onChange={(e) => props.setCategory(e.target.value, id)}
-          >
-              <option value="-">Keine Kategorie</option>
-              <option value="A">A</option>
-              <option value="B">B</option>
-              <option value="C">C</option>
-          </select>
-
-      </li>
-  );
+                />
+                <select
+                    value={prio}
+                    onChange={(e) => props.setPrio(e.target.value, id)}
+                >
+                    <option value="HIGH">Hoch</option>
+                    <option value="MEDIUM">Mittel</option>
+                    <option value="LOW">Tief</option>
+                </select>
+                <select
+                    value={cat}
+                    onChange={(e) => props.setCategory(e.target.value, id)}
+                >
+                    <option value="-">Keine Kategorie</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                </select>
+                <input
+                    type="date"
+                    value={dueDate || ""}
+                    onChange={(e) => props.setDueDate(e.target.value, id)}
+                />
+                <button
+                    data-set="check-todo-btn"
+                    onClick={handleUpdatedConfirm}
+                >
+                    <FaCheck style={{color: "green", fontSize: "16px"}}/>
+                </button>
+            </div>
+        </li>
+    );
 };
 
 export default TodoItem;
