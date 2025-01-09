@@ -59,7 +59,7 @@ jobs:
   build-deployment:
     name: Build Deployment Artifact
     runs-on: ubuntu-latest
-    needs: [lint, node-tests, check-config, update-docs]
+    needs: [lint, node-tests]
 
     steps:
       - name: Check out the repository
