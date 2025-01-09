@@ -87,6 +87,12 @@ jobs:
       - name: Build project
         run: npm run build
 
+      # Step to set global username and email for publishing
+      - name: Config git metadata
+        run: |
+          git config --global user.name 'satora4'
+          git config --global user.email 'joel@vontobelfamily.ch'
+
       # Step to publish the package to npm
       - name: Publish to npm
         env:
