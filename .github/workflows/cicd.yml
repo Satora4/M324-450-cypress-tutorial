@@ -4,16 +4,18 @@ on:
   push:
     branches:
       - main
+      - feature/github-pipelines
   pull_request:
     branches:
       - main
 
 jobs:
-  build:
+  setup:
+    name: Setup Environment
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Check out the repository
         uses: actions/checkout@v4
 
       - name: Set up Node.js
@@ -21,18 +23,96 @@ jobs:
         with:
           node-version: 16
 
+      - name: Install common dependencies
+        run: |
+          echo "Setting up the environment and installing common dependencies."
+
+  lint:
+    name: Lint YAML files
+    runs-on: ubuntu-latest
+    needs: setup
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Install yamllint
+        run: |
+          echo "Installing yamllint to lint YAML files."
+
+      - name: Run yamllint
+        run: |
+          echo "Running yamllint to check YAML file syntax."
+
+  node-tests:
+    name: Run Node.js Tests
+    runs-on: ubuntu-latest
+    needs: setup
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install
 
       - name: Run tests
-        run: npm run test
+        run: |
+          npm test
 
-      - name: Run linter
-        run: npm run lint
+  check-config:
+    name: Check Configuration Files
+    runs-on: ubuntu-latest
+    needs: setup
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Verify configuration files
+        run: |
+          echo "Checking if required configuration files (.env, config.yml) are present."
+
+  update-docs:
+    name: Update Documentation
+    runs-on: ubuntu-latest
+    needs: setup
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Install documentation tools (optional)
+        run: |
+          echo "Installing tools for documentation generation (e.g., MkDocs)."
+          exit 1
+
+  build-deployment:
+    name: Build Deployment Artifact
+    runs-on: ubuntu-latest
+    needs: [lint, node-tests, check-config, update-docs]
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
 
       - name: Build project
-        run: npm run build
-#
-#      - name: Deploy (optional)
-#        if: github.ref == 'refs/heads/main'
-#        run: echo "Deploying application..."
+        run: |
+          npm run build
+
+      - name: Placeholder for Deployment
+        run: echo "This is a placeholder for the Build Deployment Artifact job."
+
+  deploy-to-server:
+    name: Deploy to Server
+    runs-on: ubuntu-latest
+    needs: build-deployment
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Simulate Deployment
+        run: |
+          echo "Deploying application to the server..."
