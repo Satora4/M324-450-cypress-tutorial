@@ -91,8 +91,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: deployment-artifact
-          path: ./dist/
-
-      # Placeholder step for deployment (to be replaced with actual deployment logic)
-      - name: Placeholder for Deployment
-        run: echo "This is a placeholder for the Build Deployment Artifact job."
+          path: npm publish
