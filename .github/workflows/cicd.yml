@@ -23,6 +23,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
+          registry-url: 'https://npm.pkg.github.com'
           node-version: 16
 
       # Step to install all project dependencies
