@@ -86,9 +86,10 @@ jobs:
       - name: Build project
         run: npm run build
 
-      # Step to upload the build output as a deployment artifact
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: deployment-artifact
-          path: dist/
+      # Step to publish the package to npm
+      - name: Publish to npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          cd dist
+          npm publish
