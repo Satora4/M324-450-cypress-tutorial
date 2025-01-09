@@ -1,78 +1,98 @@
 name: CI/CD Pipeline
 
 on:
+  # Trigger the pipeline on every push and pull request to the main branch
   push:
   pull_request:
     branches:
       - main
 
 jobs:
+
+  # Job to set up the environment for following steps
   setup:
     name: Setup Environment
     runs-on: ubuntu-24.04
 
     steps:
+      # Step to check out the repository code
       - name: Check out the repository
         uses: actions/checkout@v4
 
+      # Step to set up Node.js version 16
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 16
 
+      # Step to install all project dependencies
       - name: Install common dependencies
         run: npm install
 
+  # Job to check code quality using ESLint
   lint:
     name: Lint
     runs-on: ubuntu-24.04
     needs: setup
 
     steps:
+      # Step to check out the repository code
       - name: Check out the repository
         uses: actions/checkout@v4
 
+      # Step to install ESLint and Prettier as development dependencies
       - name: Install Lint
         run: npm install --save-dev eslint prettier
 
+      # Step to run the linting process
       - name: Run Lint
         run: npm run lint
 
+  # Job to run tests using the test script
   node-tests:
     name: Run Tests
     runs-on: ubuntu-24.04
     needs: setup
 
     steps:
+      # Step to check out the repository code
       - name: Check out the repository
         uses: actions/checkout@v4
 
+      # Step to install all project dependencies
       - name: Install dependencies
         run: npm install
 
+      # Step to run the test suite
       - name: Run tests
         run: npm run test
 
+  # Job to build the project and create a deployment artifact
   build-deployment:
     name: Build Deployment Artifact
     runs-on: ubuntu-24.04
     needs: [ lint, node-tests ]
 
     steps:
+      # Step to check out the repository code
       - name: Check out the repository
         uses: actions/checkout@v4
 
+      # Step to install all project dependencies
       - name: Install dependencies
         run: npm install
 
+      # Step to build the project for production
       - name: Build project
         run: npm run build
 
+      # Step to upload the build output as a deployment artifact
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
         with:
           name: deployment-artifact
           path: ./dist/
 
+      # Placeholder step for deployment (to be replaced with actual deployment logic)
       - name: Placeholder for Deployment
         run: echo "This is a placeholder for the Build Deployment Artifact job."
