@@ -24,11 +24,10 @@ jobs:
           node-version: 16
 
       - name: Install common dependencies
-        run: |
-          echo "Setting up the environment and installing common dependencies."
+        run: npm ci
 
   lint:
-    name: Lint YAML files
+    name: Lint
     runs-on: ubuntu-latest
     needs: setup
 
@@ -36,16 +35,14 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v4
 
-      - name: Install yamllint
-        run: |
-          echo "Installing yamllint to lint YAML files."
+      - name: Install Lint
+        run: npm install --save-dev eslint prettier
 
-      - name: Run yamllint
-        run: |
-          echo "Running yamllint to check YAML file syntax."
+      - name: Run Lint
+        run: npm run lint
 
   node-tests:
-    name: Run Node.js Tests
+    name: Run Tests
     runs-on: ubuntu-latest
     needs: setup
 
@@ -54,39 +51,10 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install dependencies
-        run: |
-          npm install
+        run: npm install
 
       - name: Run tests
-        run: |
-          npm test
-
-  check-config:
-    name: Check Configuration Files
-    runs-on: ubuntu-latest
-    needs: setup
-
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@v4
-
-      - name: Verify configuration files
-        run: |
-          echo "Checking if required configuration files (.env, config.yml) are present."
-
-  update-docs:
-    name: Update Documentation
-    runs-on: ubuntu-latest
-    needs: setup
-
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@v4
-
-      - name: Install documentation tools (optional)
-        run: |
-          echo "Installing tools for documentation generation (e.g., MkDocs)."
-          exit 1
+        run: npm run test
 
   build-deployment:
     name: Build Deployment Artifact
@@ -98,21 +66,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build project
-        run: |
-          npm run build
+        run: npm run build
 
       - name: Placeholder for Deployment
         run: echo "This is a placeholder for the Build Deployment Artifact job."
-
-  deploy-to-server:
-    name: Deploy to Server
-    runs-on: ubuntu-latest
-    needs: build-deployment
-
-    steps:
-      - name: Check out the repository
-        uses: actions/checkout@v4
-
-      - name: Simulate Deployment
-        run: |
-          echo "Deploying application to the server..."
