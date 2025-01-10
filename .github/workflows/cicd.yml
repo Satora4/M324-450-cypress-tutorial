@@ -68,38 +68,7 @@ jobs:
       - name: Run tests
         run: npm run test
 
-  # Job to build the project and create a deployment artifact
-#  build-deployment:
-#    name: Build Deployment Artifact
-#    runs-on: ubuntu-24.04
-#    needs: [ lint, node-tests ]
-#
-#    steps:
-#      # Step to check out the repository code
-#      - name: Check out the repository
-#        uses: actions/checkout@v4
-#
-#      # Step to install all project dependencies
-#      - name: Install dependencies
-#        run: npm install
-#
-#      # Step to build the project for production
-#      - name: Build project
-#        run: npm run build
-#
-#      # Step to set global username and email for publishing
-#      - name: Config git metadata
-#        run: |
-#          git config --global user.name 'satora4'
-#          git config --global user.email 'joel@vontobelfamily.ch'
-#
-#      # Step to upload the build output as a deployment artifact
-#      - name: Upload Build Artifact
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: deployment-artifact
-#          path: ./dist/
-
+  # Job to build the project and create a deployment package
   package-deployment:
     name: Build Deployment Package
     runs-on: ubuntu-latest
@@ -115,11 +84,8 @@ jobs:
 
         # Step to install all project dependencies
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-         # Step to build the project for production
-      - name: Build project
-        run: npm run build
 
       # Setup .npmrc file to publish to npm
       - uses: actions/setup-node@v4
@@ -127,7 +93,10 @@ jobs:
           node-version: '16'
           registry-url: 'https://npm.pkg.github.com'
           scope: '@satora4'
-      - run: npm ci
-      - run: npm publish
+      - run: npm install
+      - run: git config --global user.name "satora4" && git config --global user.email "joel@vontobelfamily.ch"
+      - run: npm version --minor
+      - run: git push --tags && git push
+      - run: npm run publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
