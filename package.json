@@ -1,7 +1,8 @@
 {
   "name": "@satora4/m324-450-cypress-tutorial",
   "version": "0.0.5",
-  "main": "main.js",
+  "main": "./dist/main.js",
+  "module": "./dist/main.js",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -16,7 +17,7 @@
     "prepare-build": "npm run clean && cross-env NODE_ENV=production babel src --out-dir dist --extensions \".js,.jsx\"",
     "copy": "node -e \"const fs = require('fs'); fs.copyFileSync('package.json', 'dist/package.json'); fs.copyFileSync('README.md', 'dist/README.md');\"",
     "build": "npm run increment-version && npm run prepare-build && npm run copy",
-    "publish": "npm run build && npm publish"
+    "publish": "npm run build && npm publish",
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
