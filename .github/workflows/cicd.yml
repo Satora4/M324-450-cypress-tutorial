@@ -96,7 +96,7 @@ jobs:
       # Step to publish the package to npm
       - name: Publish to npm
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
           cd dist
-          npm publish --access public
+          npm publish
