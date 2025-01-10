@@ -51,18 +51,8 @@
     "uuid": "^9.0.0",
     "vite": "^4.4.9"
   },
-  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
-  "directories": {
-    "test": "test"
-  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Satora4/M324-450-cypress-tutorial.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Satora4/M324-450-cypress-tutorial/issues"
-  },
-  "homepage": "https://github.com/Satora4/M324-450-cypress-tutorial#readme"
+    "url": "https://github.com/Satora4/M324-450-cypress-tutorial.git"
+  }
 }

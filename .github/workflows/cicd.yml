@@ -69,36 +69,64 @@ jobs:
         run: npm run test
 
   # Job to build the project and create a deployment artifact
-  build-deployment:
-    name: Build Deployment Artifact
-    runs-on: ubuntu-24.04
-    needs: [ lint, node-tests ]
+#  build-deployment:
+#    name: Build Deployment Artifact
+#    runs-on: ubuntu-24.04
+#    needs: [ lint, node-tests ]
+#
+#    steps:
+#      # Step to check out the repository code
+#      - name: Check out the repository
+#        uses: actions/checkout@v4
+#
+#      # Step to install all project dependencies
+#      - name: Install dependencies
+#        run: npm install
+#
+#      # Step to build the project for production
+#      - name: Build project
+#        run: npm run build
+#
+#      # Step to set global username and email for publishing
+#      - name: Config git metadata
+#        run: |
+#          git config --global user.name 'satora4'
+#          git config --global user.email 'joel@vontobelfamily.ch'
+#
+#      # Step to upload the build output as a deployment artifact
+#      - name: Upload Build Artifact
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: deployment-artifact
+#          path: ./dist/
+
+  package-deployment:
+    name: Build Deployment Package
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
 
     steps:
-      # Step to check out the repository code
+        # Step to check out the repository code
       - name: Check out the repository
         uses: actions/checkout@v4
 
-      # Step to install all project dependencies
+        # Step to install all project dependencies
       - name: Install dependencies
         run: npm install
 
-      # Step to build the project for production
+         # Step to build the project for production
       - name: Build project
         run: npm run build
 
-      # Step to set global username and email for publishing
-      - name: Config git metadata
-        run: |
-          git config --global user.name 'satora4'
-          git config --global user.email 'joel@vontobelfamily.ch'
-
-      # Step to upload the build output as a deployment artifact
-      - name: Upload Build Artifact
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        uses: actions/upload-artifact@v4
+      # Setup .npmrc file to publish to npm
+      - uses: actions/setup-node@v4
         with:
-          name: deployment-artifact
-          path: ./dist/
-          run: npm publish
+          node-version: '16'
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@satora4'
+      - run: npm ci
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
