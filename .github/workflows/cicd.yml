@@ -93,10 +93,12 @@ jobs:
           git config --global user.name 'satora4'
           git config --global user.email 'joel@vontobelfamily.ch'
 
-      # Step to publish the package to npm
-      - name: Publish to npm
+      # Step to upload the build output as a deployment artifact
+      - name: Upload Build Artifact
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: |
-          cd dist
-          npm publish
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-artifact
+          path: ./dist/
+          run: npm publish
