@@ -95,7 +95,6 @@ jobs:
           scope: '@satora4'
       - run: npm install
       - run: git config --global user.name "satora4" && git config --global user.email "joel@vontobelfamily.ch"
-      - run: npm version --minor
       - run: git push --tags && git push
       - run: npm run publish
         env:
