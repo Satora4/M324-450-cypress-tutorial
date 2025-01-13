@@ -3,12 +3,10 @@ name: Build project and check Coding with Eslint
 on:
   # Trigger the pipeline on every push and pull request to the main branch
   push:
-  pull_request:
-    branches:
-      - main
 
 jobs:
 
+  # Job to build project
   build:
     name: Build
     runs-on: ubuntu-24.04

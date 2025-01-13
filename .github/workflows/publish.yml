@@ -1,14 +1,15 @@
 name: Create and publish a Docker Image
 
 on:
-  # Trigger the pipeline bei jedem Pull-Request in den main-Branch
-  pull_request:
+  # Trigger den Workflow, wenn ein Branch in `main` gemerged wurde
+  push:
     branches:
       - main
-  # Trigger die Pipeline, wenn bestimmte andere Workflows abgeschlossen sind
+  # Trigger den Workflow, wenn die anderen Workflows abgeschlossen sind
   workflow_run:
     workflows: [ 'Run all tests', 'Build project and check Coding with Eslint' ]
-    types: [ completed ]
+    types:
+      - completed
 
 env:
   # Definiere die Registry, in die das Docker-Image gepusht wird
