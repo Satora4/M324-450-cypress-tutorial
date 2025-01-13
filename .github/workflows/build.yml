@@ -37,6 +37,10 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v4
 
+      # Step to install all project dependencies
+      - name: Install common dependencies
+        run: npm install
+
       - name: Build project
         run: npm run build
 
