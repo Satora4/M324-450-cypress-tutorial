@@ -8,6 +8,7 @@ on:
       - main
 
 jobs:
+
   # Job to run tests using the test script
   node-tests:
     name: Run Tests
