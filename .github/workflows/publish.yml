@@ -1,8 +1,7 @@
 name: Create and publish a Docker Image
 
 on:
-  # Trigger the pipeline bei jedem Push oder Pull-Request in den main-Branch
-  push:
+  # Trigger the pipeline bei jedem Pull-Request in den main-Branch
   pull_request:
     branches:
       - main
