@@ -1,6 +1,6 @@
 {
   "name": "@satora4/m324-450-cypress-tutorial",
-  "version": "0.0.5",
+  "version": "0.0.41",
   "main": "./dist/main.js",
   "module": "./dist/main.js",
   "type": "module",
