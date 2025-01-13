@@ -1,0 +1,60 @@
+name: Build & eslint
+
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # Job to set up the environment for following steps
+  setup:
+    name: Setup Environment
+    runs-on: ubuntu-24.04
+
+    steps:
+      # Step to check out the repository code
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      # Step to set up Node.js version 16
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          registry-url: 'https://registry.npmjs.org'
+
+      # Step to install all project dependencies
+      - name: Install common dependencies
+        run: npm install
+
+  build:
+    name: Build
+    runs-on: ubuntu-24.04
+    needs: setup
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Build project
+        run: npm run build
+
+  # Job to check code quality using ESLint
+  lint:
+    name: Lint
+    runs-on: ubuntu-24.04
+    needs: setup
+
+    steps:
+      # Step to check out the repository code
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      # Step to install ESLint and Prettier as development dependencies
+      - name: Install Lint
+        run: npm install --save-dev eslint prettier
+
+      # Step to run the linting process
+      - name: Run Lint
+        run: npm run lint

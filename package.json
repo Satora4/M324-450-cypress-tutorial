@@ -1,12 +1,12 @@
 {
   "name": "@satora4/m324-450-cypress-tutorial",
-  "version": "0.0.57",
+  "version": "0.0.1",
   "main": "./dist/main.js",
   "module": "./dist/main.js",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run increment-version && vite build",
+    "build": "vite build",
     "test": "jest",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
