@@ -1,6 +1,6 @@
 {
   "name": "@satora4/m324-450-cypress-tutorial",
-  "version": "0.0.41",
+  "version": "0.0.51",
   "main": "./dist/main.js",
   "module": "./dist/main.js",
   "type": "module",
@@ -16,8 +16,7 @@
     "clean": "rimraf dist",
     "prepare-build": "npm run clean && cross-env NODE_ENV=production babel src --out-dir dist --extensions \".js,.jsx\"",
     "copy": "node -e \"const fs = require('fs'); fs.copyFileSync('package.json', 'dist/package.json'); fs.copyFileSync('README.md', 'dist/README.md');\"",
-    "build": "npm run increment-version && npm run prepare-build && npm run copy",
-    "publish": "npm run build && npm publish"
+    "build": "npm run increment-version && npm run prepare-build && npm run copy"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
@@ -55,6 +54,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Satora4/M324-450-cypress-tutorial.git"
+    "url": "https://github.com/Satora4/M324-450-cypress-tutorial.git"
   }
 }

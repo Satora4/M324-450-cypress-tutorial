@@ -87,16 +87,16 @@ jobs:
         run: npm ci
 
 
-      # Setup .npmrc file to publish to npm
+      # Setup rename.npmrc file to publish to npm
       - uses: actions/setup-node@v4
         with:
           node-version: 16
           registry-url: 'https://npm.pkg.github.com'
           scope: '@satora4'
-      - run: npm install
-      - run: git config --global user.name "satora4" && git config --global user.email "joel@vontobelfamily.ch"
-      - run: git push --tags && git push
-      - run: npm run publish
+
+      - name: Install & publish
+        run: | 
+          npm install
+          npm publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
