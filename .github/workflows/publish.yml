@@ -1,56 +1,71 @@
 name: Create and publish a Docker Image
 
 on:
-  # Trigger the pipeline on every push and pull request to the main branch
+  # Trigger the pipeline bei jedem Push oder Pull-Request in den main-Branch
   push:
   pull_request:
     branches:
       - main
+  # Trigger die Pipeline, wenn bestimmte andere Workflows abgeschlossen sind
   workflow_run:
     workflows: [ 'Run all tests', 'Build project and check Coding with Eslint' ]
     types: [ completed ]
 
 env:
+  # Definiere die Registry, in die das Docker-Image gepusht wird
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  # Der Name des Docker-Images basiert auf dem Repository-Namen
+  IMAGE_NAME: cypress-tutorial-todo-list
 
 jobs:
 
   build-and-push-image:
+    # Der Job läuft auf der neuesten Ubuntu-Version
     runs-on: ubuntu-latest
     permissions:
+      # Erlaube Zugriff auf Repository-Inhalte (nur lesend)
       contents: read
+      # Erlaube Schreiben von Paketen in die Registry
       packages: write
+      # Erlaube Schreiben von Attestationen (z. B. Signaturen)
       attestations: write
+      # Erlaube den Zugriff auf das OIDC-Token für die Authentifizierung
       id-token: write
 
     steps:
       - name: Checkout repository
+        # Checkt den Code aus dem Repository in den Build-Container aus
         uses: actions/checkout@v4
+
       - name: Log in to the Container registry
+        # Loggt sich in die Container-Registry ein, um Images zu pushen
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Extract metadata (tags, labels) for Docker
+        # Extrahiert Metadaten wie Tags und Labels für das Docker-Image
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       - name: Build and push Docker image
+        # Baut das Docker-Image und pusht es in die Container-Registry
         id: push
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          context: . # Das aktuelle Verzeichnis als Build-Kontext
+          push: true # Pusht das gebaute Image in die Registry
+          tags: ${{ steps.meta.outputs.tags }} # Nutzt die generierten Tags
+          labels: ${{ steps.meta.outputs.labels }} # Nutzt die generierten Labels
 
       - name: Generate artifact attestation
+        # Generiert eine Attestation für das Image, um die Herkunft zu belegen
         uses: actions/attest-build-provenance@v2
         with:
-          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
-          subject-digest: ${{ steps.push.outputs.digest }}
-          push-to-registry: true
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          subject-digest: ${{ steps.push.outputs.digest }} # Digest des Images
+          push-to-registry: true # Pusht die Attestation in die Registry
