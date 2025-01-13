@@ -1,4 +1,4 @@
-name: Test
+name: Run all tests
 
 on:
   # Trigger the pipeline on every push and pull request to the main branch
@@ -8,26 +8,6 @@ on:
       - main
 
 jobs:
-  setup:
-    name: Setup Environment
-    runs-on: ubuntu-24.04
-
-    steps:
-      # Step to check out the repository code
-      - name: Check out the repository
-        uses: actions/checkout@v4
-
-      # Step to set up Node.js version 16
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20
-          registry-url: 'https://registry.npmjs.org'
-
-      # Step to install all project dependencies
-      - name: Install common dependencies
-        run: npm install
-
   # Job to run tests using the test script
   node-tests:
     name: Run Tests
@@ -38,6 +18,10 @@ jobs:
       # Step to check out the repository code
       - name: Check out the repository
         uses: actions/checkout@v4
+
+      # Step to install all project dependencies
+      - name: Install common dependencies
+        run: npm install
 
       # Step to run the test suite
       - name: Run tests
