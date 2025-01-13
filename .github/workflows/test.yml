@@ -1,0 +1,28 @@
+name: Run all tests
+
+on:
+  # Trigger the pipeline on every push and pull request to the main branch
+  push:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  # Job to run tests using the test script
+  node-tests:
+    name: Run Tests
+    runs-on: ubuntu-24.04
+
+    steps:
+      # Step to check out the repository code
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      # Step to install all project dependencies
+      - name: Install common dependencies
+        run: npm install
+
+      # Step to run the test suite
+      - name: Run tests
+        run: npm run test

@@ -1,0 +1,44 @@
+name: Build project and check Coding with Eslint
+
+on:
+  # Trigger the pipeline on every push and pull request to the main branch
+  push:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-24.04
+
+    steps:
+      # Step to check out the repository code
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      # Step to install all project dependencies
+      - name: Install dependencies
+        run: npm install
+      # Step to build the project
+      - name: Build project
+        run: npm run build
+
+  # Job to check code quality using ESLint
+  lint:
+    name: Lint
+    runs-on: ubuntu-24.04
+
+    steps:
+      # Step to check out the repository code
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      # Step to install ESLint and Prettier as development dependencies
+      - name: Install Lint
+        run: npm install --save-dev eslint prettier
+
+      # Step to run the linting process
+      - name: Run Lint
+        run: npm run lint
