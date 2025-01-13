@@ -20,6 +20,13 @@ env:
 jobs:
 
   build-and-push-image:
+    # Bedingung: Dieser Job wird nur ausgeführt, wenn beide Workflows erfolgreich abgeschlossen sind.
+    if: >
+      github.event.workflow_run.workflow == 'Run all tests' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.workflow == 'Build project and check Coding with Eslint' &&
+      github.event.workflow_run.conclusion == 'success'
+
     # Der Job läuft auf der neuesten Ubuntu-Version
     runs-on: ubuntu-latest
     permissions:
