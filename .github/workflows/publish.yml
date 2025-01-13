@@ -14,7 +14,7 @@ env:
   # Definiere die Registry, in die das Docker-Image gepusht wird
   REGISTRY: ghcr.io
   # Der Name des Docker-Images basiert auf dem Repository-Namen
-  IMAGE_NAME: cypress-tutorial-todo-list
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
 
