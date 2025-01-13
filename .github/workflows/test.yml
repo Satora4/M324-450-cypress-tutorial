@@ -3,9 +3,6 @@ name: Run all tests
 on:
   # Trigger the pipeline on every push and pull request to the main branch
   push:
-  pull_request:
-    branches:
-      - main
 
 jobs:
 
