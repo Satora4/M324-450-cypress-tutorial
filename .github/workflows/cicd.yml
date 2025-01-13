@@ -95,8 +95,7 @@ jobs:
 
       - name: Install & publish
         run: | 
-          npm install
-          npm run vite-build
+          npm ci
           npm run build
           npm publish
         env:

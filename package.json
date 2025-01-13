@@ -6,17 +6,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "vite-build": "vite build",
+    "build": "npm run increment-version && vite build",
     "test": "jest",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "increment-version": "node increment-version.js",
-    "clean": "rimraf dist",
-    "prepare-build": "npm run clean && cross-env NODE_ENV=production babel src --out-dir dist --extensions \".js,.jsx\"",
-    "copy": "node -e \"const fs = require('fs'); fs.copyFileSync('package.json', 'dist/package.json'); fs.copyFileSync('README.md', 'dist/README.md');\"",
-    "build": "npm run increment-version && npm run prepare-build && npm run copy"
+    "increment-version": "node increment-version.js"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
