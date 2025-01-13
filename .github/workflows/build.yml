@@ -12,7 +12,6 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-24.04
-    needs: setup
 
     steps:
       # Step to check out the repository code

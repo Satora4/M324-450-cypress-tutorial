@@ -6,6 +6,9 @@ on:
   pull_request:
     branches:
       - main
+  workflow_run:
+    workflows: [ 'Run all tests', 'Build project and check Coding with Eslint' ]
+    types: [ completed ]
 
 env:
   REGISTRY: ghcr.io
